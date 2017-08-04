@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import Lookups from "./components/lookups";
-import FormLayout from "./components/form-layout";
+// import Lookups from "./components/lookups";
+import Lookups from "./build/components/lookups";
 
 class App extends Component {
   render() {

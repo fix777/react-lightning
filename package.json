@@ -94,6 +94,7 @@
     "@types/react-dom": "^15.5.1",
     "awesome-typescript-loader": "^3.2.2",
     "classnames": "^2.2.5",
+    "directory-tree": "^2.0.0",
     "ts-node": "^3.3.0",
     "tslint": "^5.5.0",
     "typescript": "^2.4.2"
