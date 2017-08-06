@@ -1,35 +1,28 @@
 import React, { Component } from "react";
 
+import Container from "./pill-container";
+
 import Icon from "./../icon";
+import Button from "./../button";
 
 // function noop(...args: any[]) { return args; }
 function noop() {} // tslint:disable-line:no-empty
 
-export type PillType = "base";
-
 export interface PillProps {
-  type?: PillType;
   pillKey?: string;
-  label: React.ReactNode;
+  label?: React.ReactNode;
   closable?: boolean;
 
   onClose?(props?: PillProps, event?: React.SyntheticEvent<HTMLButtonElement>): void;
   unmountMe?(): void;
 }
 
-export interface PillState {
-  visible: boolean;
-}
+export class Pill extends Component<PillProps> {
+  static container: typeof Container;
 
-export class Pill extends Component<PillProps, PillState> {
   static defaultProps: Partial<PillProps> = {
-    type: "base",
     label: "Pill Label",
     closable: false,
-  };
-
-  state: PillState = {
-    visible: true,
   };
 
   onClose = (event: React.SyntheticEvent<HTMLButtonElement>) => {
@@ -61,13 +54,11 @@ export function isClosable(ctx: Pill) {
   if (!closable) return null;
   const { onClose } = ctx;
   return (
-    <button
-      className="slds-button slds-button_icon slds-button_icon slds-pill__remove"
-      title="Remove"
+    <Button
+      className="slds-button_icon slds-pill__remove"
       onClick={onClose}
     >
       <Icon type="close" />
-      <span className="slds-assistive-text">Remove</span>
-    </button>
+    </Button>
   );
 }

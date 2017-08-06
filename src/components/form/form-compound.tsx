@@ -1,58 +1,53 @@
 import React, { Component } from "react";
 // import classNames from "classnames";
 
-export type FormLayoutType = "base" | "compound";
-
-export interface RowElement {
+export interface FormElements {
   size: string;
   label: string;
   control: React.ReactNode;
 }
 
-export interface Row {
-  rowElement: RowElement[];
+export interface FormElementRows {
+  formElements: FormElements[];
 }
 
-export interface FormElement {
+export interface FormElementGroup {
+  formElementRows: FormElementRows[];
+}
+
+export interface FieldSet {
   legend: string;
-  row: Row[];
+  formElementGroup: FormElementGroup;
 }
 
-export interface FormLayoutProps {
-  type: FormLayoutType;
-  formElement: FormElement[];
+export interface FormCompoundProps {
+  fieldsets: FieldSet[];
+
   onSubmit?(event?: React.FormEvent<HTMLFormElement>): void;
 }
 
-export class FormLayout extends Component<FormLayoutProps> {
-  private formRef: HTMLFormElement;
-
-  componentDidMount() {
-    console.dir(this.formRef);
-  }
-
+export class FormCompound extends Component<FormCompoundProps> {
   render() {
     const {
-      formElement,
+      fieldsets,
       onSubmit,
     } = this.props;
 
     return (
       <form
         className="slds-form slds-form_compound"
-        ref={(form: HTMLFormElement) => this.formRef = form}
         onSubmit={onSubmit}
       >
         {
-          formElement.map((fe, feIndex: number) => (
+          fieldsets.map((fe, feIndex: number) => (
             <fieldset key={feIndex} className="slds-form-element">
               <legend className="slds-form-element__label slds-text-title_caps">{ fe.legend }</legend>
               <div className="slds-form-element__group">
                 {
-                  fe.row.map((fer, ferIndex: number) => (
+                  fe.formElementGroup.formElementRows.map((fer, ferIndex: number) => (
                     <div key={ferIndex} className="slds-form-element__row">
                       {
-                        fer.rowElement.map((fere, fereIndex: number) => (
+                        fer.formElements.map((fere, fereIndex: number) => (
                           <div key={fereIndex} className={`slds-form-element slds-size_${fere.size}`}>
                             <label className="slds-form-element__label">{ fere.label }</label>
                             { fere.control }
@@ -76,4 +71,4 @@ export class FormLayout extends Component<FormLayoutProps> {
   }
 }
 
-export default FormLayout;
+export default FormCompound;
