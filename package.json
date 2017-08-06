@@ -2,6 +2,7 @@
   "name": "react-lightning",
   "version": "0.1.0",
   "private": true,
+  "main": "build/components/index.js",
   "dependencies": {
     "@salesforce-ux/design-system": "^2.3.1",
     "autoprefixer": "7.1.1",
