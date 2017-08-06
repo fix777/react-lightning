@@ -3,6 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "main": "build/components/index.js",
+  "author": "fix777 <wangguoguo.lan@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fix777/react-lightning.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fix777/react-lightning/issues"
+  },
+  "homepage": "https://github.com/fix777/react-lightning#readme",
   "dependencies": {
     "@salesforce-ux/design-system": "^2.3.1",
     "autoprefixer": "7.1.1",
