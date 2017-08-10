@@ -28,18 +28,22 @@ const loop = (dataSource, parentDirName = "", files = []) => {
   return [...tmp, ...files];
 };
 
+// console.log(loop(tree.children || []));
+
 const entries =
   loop(tree.children || [])
   .reduce((entryObj, entry) => {
     const { name, path } = entry;
     if (!name.includes(".")) return entryObj;
-    const [nameStr, ext] = name.split(".");
-    if (!["ts", "tsx"].includes(ext)) return entryObj;
-    entryObj[`${nameStr}.js`] = path;
+    if (/\.d.ts$/.test(name) || /\.css$/.test(name)) {
+      entryObj[name] = path;
+    } else {
+      entryObj[`${name.split(".")[0]}.js`] = path;
+    }
     return entryObj;
   }, {});
 
-// console.log(entries);
+console.log(entries);
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -115,13 +119,7 @@ module.exports = {
     // https://github.com/facebookincubator/create-react-app/issues/290
     // `web` extension prefixes have been added for better support
     // for React Native Web.
-    extensions: ['.ts', '.tsx', '.web.js', '.js', '.json', '.web.jsx', '.jsx'],
-    alias: {
-      
-      // Support React Native Web
-      // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-      'react-native': 'react-native-web',
-    },
+    extensions: ['.tsx', '.js', '.json', '.jsx'],
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
       // This often causes confusion because we only process files within src/ with babel.
@@ -132,41 +130,18 @@ module.exports = {
     ],
   },
   module: {
-    // strictExportPresence: true,
     rules: [
-      // TODO: Disable require.ensure as it's not a standard language feature.
-      // We are waiting for https://github.com/facebookincubator/create-react-app/issues/2176.
-      // { parser: { requireEnsure: false } },
-
-      // First, run the linter.
-      // It's important to do this before Babel processes the JS.
-      // {
-      //   test: /\.(js|jsx)$/,
-      //   enforce: 'pre',
-      //   use: [
-      //     {
-      //       options: {
-      //         formatter: eslintFormatter,
-              
-      //       },
-      //       loader: require.resolve('eslint-loader'),
-      //     },
-      //   ],
-      //   include: paths.appSrc,
-      // },
-      // ** ADDING/UPDATING LOADERS **
-      // The "file" loader handles all assets unless explicitly excluded.
-      // The `exclude` list *must* be updated with every change to loader extensions.
-      // When adding a new loader, you must add its `test`
-      // as a new entry in the `exclude` list in the "file" loader.
-
-      // "file" loader makes sure those assets end up in the `build` folder.
-      // When you `import` an asset, you get its filename.
+      // "file" loader makes sure those assets get served by WebpackDevServer.
+      // When you `import` an asset, you get its (virtual) filename.
+      // In production, they would get copied to the `build` folder.
       {
+        include: [
+          /\.d\.ts$/,
+        ],
         exclude: [
           /\.html$/,
           /\.(js|jsx)$/,
-          /\.(ts|tsx)$/,
+          /\.tsx$/,
           /\.css$/,
           /\.json$/,
           /\.bmp$/,
@@ -176,13 +151,13 @@ module.exports = {
         ],
         loader: require.resolve('file-loader'),
         options: {
-          name: 'static/media/[name].[hash:8].[ext]',
+          name: '[path][name].[ext]',
         },
       },
       // "url" loader works just like "file" loader but it also embeds
       // assets smaller than specified size as data URLs to avoid requests.
       {
-        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+        test: [/\.svg/],
         loader: require.resolve('url-loader'),
         options: {
           limit: 10000,
@@ -191,34 +166,15 @@ module.exports = {
       },
       // Process TSX? with TypeScript
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.tsx$/,
+        exclude: [
+          /\.d\.ts$/,
+        ],
         loader: [
           require.resolve('babel-loader'),
           require.resolve('awesome-typescript-loader'),
         ],
       },
-      // Process JS with Babel.
-      // {
-      //   test: /\.(js|jsx)$/,
-      //   include: paths.appSrc,
-      //   loader: require.resolve('babel-loader'),
-      //   options: {
-          
-      //     compact: true,
-      //   },
-      // },
-      // The notation here is somewhat confusing.
-      // "postcss" loader applies autoprefixer to our CSS.
-      // "css" loader resolves paths in CSS and adds assets as dependencies.
-      // "style" loader normally turns CSS into JS modules injecting <style>,
-      // but unlike in development configuration, we do something different.
-      // `ExtractTextPlugin` first applies the "postcss" and "css" loaders
-      // (second argument), then grabs the result CSS and puts it into a
-      // separate file in our build process. This way we actually ship
-      // a single CSS file in production instead of JS code injecting <style>
-      // tags. If you use code splitting, however, any async bundles will still
-      // use the "style" loader inside the async code so CSS from them won't be
-      // in the main CSS file.
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract(

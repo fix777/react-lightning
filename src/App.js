@@ -6,7 +6,7 @@ import './App.css';
 // import Lookup from "./components/lookup";
 // import Form from "./components/form";
 import {
-  Input, Lookup, Form
+  Input, Lookup, Form, Tile,
 } from "./components";
 
 const { compound: FormCompound } = Form;
@@ -20,47 +20,19 @@ class App extends Component {
           <h2>Welcome to React</h2>
         </div> 
         <div className="demo-only">
-          <Lookup
-            ref={lookup => this.lookup = lookup}
-            selections={[
-              /*{
-                pillKey: "1",
-                closable: true,
+          <Tile
+            type="icon"
+            icon="automate"
+            title={<a href="javascript:void(0)">Hello Tile</a>}
+            details={[
+              {
+                // label: "label 1 label 1 label 1 label 1",
+                description: "Desc 1 Desc 1 Desc 1 Desc 1 Desc 1",
               },
               {
-                pillKey: "2",
-                closable: true,
-              },*/
-            ]}
-            candidates={[
-              <div style={{ padding: 10 }}>
-                <FormCompound
-                  onSubmit={(e) => { e.preventDefault(); this.lookup.__wrappedComponent.toggleOpen(); }}
-                  fieldsets={[
-                    {
-                      legend: "Location",
-                      formElementGroup: {
-                        formElementRows: [
-                          {
-                            formElements: [
-                              {
-                                size: "1-of-2",
-                                label: "Latitude",
-                                control: <input type="text" name="lat" className="slds-input" />,
-                              },
-                              {
-                                size: "1-of-2",
-                                label: "Longitude",
-                                control: <input type="text" name="lon" className="slds-input" />,
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ]}
-                />
-              </div>,
+                // label: "label 2 label 2 label 2 label 2 label 2 label 2",
+                description: "Desc 2 Desc 2 Desc 2 Desc 2 Desc 2 Desc 2 Desc 2 Desc 2",
+              },
             ]}
           />
         </div>
@@ -173,3 +145,48 @@ class App extends Component {
 // }
 
 export default App;
+
+
+{/* <Lookup
+            ref={lookup => this.lookup = lookup}
+            selections={[
+              {
+                pillKey: "1",
+                closable: true,
+              },
+              {
+                pillKey: "2",
+                closable: true,
+              },
+            ]}
+            candidates={[
+              <div style={{ padding: 10 }}>
+                <FormCompound
+                  onSubmit={(e) => { e.preventDefault(); this.lookup.__wrappedComponent.toggleOpen(); }}
+                  fieldsets={[
+                    {
+                      legend: "Location",
+                      formElementGroup: {
+                        formElementRows: [
+                          {
+                            formElements: [
+                              {
+                                size: "1-of-2",
+                                label: "Latitude",
+                                control: <input type="text" name="lat" className="slds-input" />,
+                              },
+                              {
+                                size: "1-of-2",
+                                label: "Longitude",
+                                control: <input type="text" name="lon" className="slds-input" />,
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ]}
+                />
+              </div>,
+            ]}
+          /> */}
