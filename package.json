@@ -1,6 +1,6 @@
 {
   "name": "react-lightning",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "build/components/index.js",
   "author": "fix777 <wangguoguo.lan@gmail.com>",
   "license": "MIT",
